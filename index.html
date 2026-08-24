@@ -1,653 +1,171 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game do Saber — E.E. Roberto Langer Junior</title>
+    <title>GAME DO SABER | Quiz Interativo</title>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
-    <style>
-        :root {
-            --primary: #1e3a8a;
-            --primary-hover: #1d4ed8;
-            --secondary: #0d9488;
-            --secondary-hover: #0f766e;
-            --accent: #f59e0b;
-            --background: #f8fafc;
-            --surface: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        body {
-            background-color: var(--background);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            line-height: 1.6;
-        }
-
-        /* HEADER & NAVBAR */
-        header {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-            color: white;
-            padding: 2.5rem 1.5rem 1.5rem;
-            box-shadow: var(--shadow-md);
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-        }
-
-        .brand-logo {
-            width: 68px;
-            height: 68px;
-            border-radius: 50%;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            object-fit: cover;
-            background: white;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .brand-text h1 {
-            font-size: 1.75rem;
-            font-weight: 800;
-            letter-spacing: -0.025em;
-            background: linear-gradient(to right, #ffffff, #93c5fd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .brand-text p {
-            font-size: 0.875rem;
-            color: #94a3b8;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .user-status {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            backdrop-filter: blur(8px);
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            background-color: #22c55e;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #22c55e;
-        }
-
-        /* NAVIGATION BAR */
-        nav {
-            background-color: var(--surface);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            overflow-x: auto;
-        }
-
-        .nav-btn {
-            padding: 0.625rem 1.25rem;
-            border: none;
-            border-radius: 8px;
-            background: transparent;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.938rem;
-            cursor: pointer;
-            transition: var(--transition);
-            white-space: nowrap;
-        }
-
-        .nav-btn:hover {
-            color: var(--primary);
-            background-color: #f1f5f9;
-        }
-
-        .nav-btn.active {
-            color: var(--primary);
-            background-color: #eff6ff;
-        }
-
-        /* MAIN LAYOUT */
-        main {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-            width: 100%;
-            flex: 1;
-        }
-
-        .tab-content {
-            display: none;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* SECTION STYLES */
-        .card-panel {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 2.5rem;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-md);
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        .section-subtitle {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            font-size: 1rem;
-        }
-
-        /* HOME TAB */
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2.5rem;
-            align-items: center;
-        }
-
-        @media (max-width: 768px) {
-            .hero-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .hero-media {
-            position: relative;
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--border);
-        }
-
-        .hero-media img {
-            width: 100%;
-            height: 320px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .hero-media figcaption {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            color: white;
-            padding: 0.75rem 1rem;
-            backdrop-filter: blur(4px);
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        /* LOGIN FORM */
-        .login-box {
-            max-width: 420px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-main);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: var(--transition);
-            outline: none;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 0.875rem;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-        }
-
-        /* FLASHCARDS GRID */
-        .stats-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #f1f5f9;
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius-md);
-            margin-bottom: 2rem;
-            font-weight: 600;
-        }
-
-        .flashcards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .flashcard {
-            height: 200px;
-            perspective: 1000px;
-            cursor: pointer;
-        }
-
-        .flashcard-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-
-        .flashcard.flipped .flashcard-inner {
-            transform: rotateY(180deg);
-        }
-
-        .flashcard-front, .flashcard-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: var(--radius-md);
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border);
-        }
-
-        .flashcard-front {
-            background-color: var(--surface);
-            color: var(--text-main);
-            border-top: 4px solid var(--primary);
-        }
-
-        .flashcard-front .tag {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .flashcard-back {
-            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
-            color: white;
-            transform: rotateY(180deg);
-        }
-
-        /* ABOUT SECTION */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .info-card {
-            background: #f8fafc;
-            padding: 1.5rem;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-        }
-
-        .info-card h3 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            font-size: 1.125rem;
-        }
-
-        /* FOOTER */
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            margin-top: auto;
-        }
-
-        .alert {
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            font-size: 0.875rem;
-            display: none;
-        }
-
-        .alert-success {
-            background-color: #dcfce7;
-            color: #15803d;
-            border: 1px solid #bbf7d0;
-        }
-    </style>
+    <!-- FontAwesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <header>
-        <div class="header-container">
-            <div class="brand">
-                <img src="logo-escola.png" alt="Logo EE Roberto Langer Junior" class="brand-logo" onerror="this.src='https://via.placeholder.com/68/1e3a8a/ffffff?text=EERLJ'">
-                <div class="brand-text">
-                    <h1>GAME DO SABER</h1>
-                    <p>E.E. Roberto Langer Junior</p>
+    <!-- Fundo de Partículas e Animação -->
+    <canvas id="particles-canvas"></canvas>
+    <div class="bg-gradient-overlay"></div>
+
+    <main class="main-container">
+
+        <!-- CABEÇALHO DO PROJETO -->
+        <header class="game-header">
+            <div class="logo-badge">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <h1 class="title-glitch">GAME DO SABER</h1>
+            <p class="subtitle">NOSSA ESCOLA, NOSSO COMPROMISSO</p>
+            <div class="header-divider"></div>
+            <p class="question-banner">
+                <i class="fa-solid fa-lightbulb"></i>
+                <u>O QUE NÓS PODEMOS FAZER PARA TORNAR NOSSA ESCOLA AINDA MELHOR?</u>
+            </p>
+        </header>
+
+        <!-- SEÇÃO DE DESTAQUE / ANTES E DEPOIS -->
+        <section class="feature-card">
+            <figure class="media-container">
+                <img src="days.jpeg" alt="Manutenção e cuidado com ventilador da escola" id="featured-img">
+                <figcaption class="media-caption">
+                    <i class="fa-solid fa-camera"></i>
+                    <b>antes e depois - "ventilador"</b>
+                </figcaption>
+            </figure>
+            <p class="awareness-text">
+                O cuidado com o patrimônio da escola é responsabilidade de todos os estudantes e funcionários. 
+                Os bens duráveis são fundamentais para o desenvolvimento pedagógico e geram um ambiente melhor para todos.
+            </p>
+        </section>
+
+        <!-- TELA 1: LOGIN E IDENTIFICAÇÃO -->
+        <section class="game-card" id="login-card">
+            <div class="card-header">
+                <i class="fa-solid fa-user-astronaut card-icon"></i>
+                <h2>Entrar no Game</h2>
+                <p>Identifique-se para acumular pontos e subir no Ranking Escolar!</p>
+            </div>
+            
+            <form id="login-form" class="login-form">
+                <div class="input-group">
+                    <i class="fa-solid fa-user input-icon"></i>
+                    <input type="text" id="username" class="custom-input" placeholder="Digite seu Nome ou Apelido" required maxlength="20" autocomplete="off">
+                </div>
+
+                <div class="input-group">
+                    <i class="fa-solid fa-school input-icon"></i>
+                    <select id="user-grade" class="custom-input" required>
+                        <option value="" disabled selected>Selecione sua Turma/Série</option>
+                        <option value="6º Ano">6º Ano</option>
+                        <option value="7º Ano">7º Ano</option>
+                        <option value="8º Ano">8º Ano</option>
+                        <option value="9º Ano">9º Ano</option>
+                        <option value="Ensino Médio">Ensino Médio</option>
+                        <option value="Professor / Funcionário">Professor / Funcionário</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-glow">
+                    <span>Iniciar Desafio</span>
+                    <i class="fa-solid fa-play"></i>
+                </button>
+            </form>
+        </section>
+
+        <!-- TELA 2: INTERFACE DO QUIZ -->
+        <section class="game-card hide" id="quiz-card">
+            <!-- Barra de Status Superior -->
+            <div class="status-bar">
+                <div class="player-info">
+                    <i class="fa-solid fa-user-check"></i>
+                    <span id="player-display">Jogador: -</span>
+                </div>
+                <div class="timer-badge" id="timer-badge">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span id="timer-text">15s</span>
+                </div>
+                <div class="score-badge">
+                    <i class="fa-solid fa-star"></i>
+                    <span id="score-tracker">0 pts</span>
                 </div>
             </div>
-            <div class="user-status">
-                <span class="status-dot"></span>
-                <span id="userStatusText">Visitante</span>
+
+            <!-- Barra de Progresso das Perguntas -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
             </div>
-        </div>
-    </header>
 
-    <nav>
-        <div class="nav-container">
-            <button class="nav-btn active" onclick="App.switchTab('inicio')">Início</button>
-            <button class="nav-btn" onclick="App.switchTab('login')">Acesso do Aluno</button>
-            <button class="nav-btn" onclick="App.switchTab('flashcards')">Flash Cards</button>
-            <button class="nav-btn" onclick="App.switchTab('sobre')">Sobre o Projeto</button>
-        </div>
-    </nav>
+            <div class="question-box">
+                <span class="question-number" id="question-number">Pergunta 1/10</span>
+                <h2 id="question-title" class="question-title">Carregando pergunta...</h2>
+            </div>
 
-    <main>
-        <!-- ABA 1: INÍCIO -->
-        <section id="inicio" class="tab-content active">
-            <div class="card-panel">
-                <div class="hero-grid">
-                    <div>
-                        <h2 class="section-title">Nossa Escola, Nosso Compromisso</h2>
-                        <p class="section-subtitle">O que podemos fazer juntos para tornar nosso ambiente escolar excelente?</p>
-                        <p style="margin-bottom: 1.5rem; color: var(--text-muted);">
-                            O cuidado com o patrimônio público é uma responsabilidade compartilhada. A manutenção dos espaços, mobiliários e equipamentos garante a qualidade da aprendizagem e um ambiente saudável para toda a comunidade escolar.
-                        </p>
-                        <button class="btn-primary" style="width: auto; padding: 0.75rem 1.5rem;" onclick="App.switchTab('flashcards')">Começar Desafios</button>
-                    </div>
-                    <figure class="hero-media">
-                        <img src="days.jpeg" alt="Manutenção e conservação do patrimônio escolar" onerror="this.src='https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=800&q=80'">
-                        <figcaption><b>Antes e Depois:</b> Processo de recuperação e zeladoria do espaço escolar.</figcaption>
-                    </figure>
-                </div>
+            <div class="options-grid" id="options-container">
+                <!-- Botões das Opções inseridos dinamicamente -->
+            </div>
+
+            <div class="feedback-container">
+                <p class="feedback-text" id="feedback-text"></p>
             </div>
         </section>
 
-        <!-- ABA 2: LOGIN -->
-        <section id="login" class="tab-content">
-            <div class="card-panel">
-                <div class="login-box">
-                    <h2 class="section-title" style="text-align: center;">Portal de Acesso</h2>
-                    <p class="section-subtitle" style="text-align: center;">Identifique-se para computar sua pontuação</p>
-                    
-                    <form id="loginForm" onsubmit="App.handleLogin(event)">
-                        <div class="form-group">
-                            <label for="username">Nome Completo ou Registro do Aluno (RA)</label>
-                            <input type="text" id="username" class="form-control" placeholder="Ex: João Silva" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="turma">Turma / Série</label>
-                            <select id="turma" class="form-control" required>
-                                <option value="">Selecione a sua turma</option>
-                                <option value="1A">1º Ano A</option>
-                                <option value="2A">2º Ano A</option>
-                                <option value="3A">3º Ano A</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn-primary">Entrar na Plataforma</button>
-                    </form>
-                    <div id="loginAlert" class="alert alert-success"></div>
+        <!-- TELA 3: RESULTADO FINAL E RANKING -->
+        <section class="game-card hide" id="result-card">
+            <div class="result-header">
+                <div class="trophy-icon">
+                    <i class="fa-solid fa-trophy"></i>
                 </div>
+                <h2>Parabéns pelo Desempenho!</h2>
+            </div>
+
+            <div class="result-body">
+                <p class="final-score-text" id="final-score-text">Você fez 0 pontos</p>
+                <div class="badge-container">
+                    <span class="badge" id="achievement-badge">Guardião do Patrimônio</span>
+                </div>
+                <p class="high-score-info" id="high-score-info">Seu recorde pessoal: 0 pts</p>
+
+                <!-- Tabela de Ranking Local -->
+                <div class="leaderboard-section">
+                    <h3><i class="fa-solid fa-ranking-star"></i> Top 5 Alunos Conscientes</h3>
+                    <ul class="leaderboard-list" id="leaderboard-list">
+                        <!-- Itens do Ranking inseridos dinamicamente -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="restartQuiz()">
+                    <i class="fa-solid fa-rotate-right"></i> Jogar Novamente
+                </button>
+                <button class="btn btn-secondary" onclick="logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> Trocar de Usuário
+                </button>
             </div>
         </section>
 
-        <!-- ABA 3: FLASHCARDS -->
-        <section id="flashcards" class="tab-content">
-            <div class="card-panel">
-                <h2 class="section-title">Flash Cards Interativos</h2>
-                <p class="section-subtitle">Clique nos cards para testar seus conhecimentos sobre cidadania e patrimônio escolar.</p>
-                
-                <div class="stats-bar">
-                    <span>Cards Virados: <span id="cardsCount">0</span> / 6</span>
-                    <span id="scoreText">Progresso: 0%</span>
-                </div>
-
-                <div class="flashcards-grid" id="flashcardsContainer"></div>
-            </div>
-        </section>
-
-        <!-- ABA 4: SOBRE -->
-        <section id="sobre" class="tab-content">
-            <div class="card-panel">
-                <h2 class="section-title">Sobre o Game do Saber</h2>
-                <p class="section-subtitle">Iniciativa educacional desenvolvida para a E.E. Roberto Langer Junior.</p>
-                
-                <p>O <b>Game do Saber</b> é uma ferramenta pedagógica gamificada criada para conscientizar, engajar e educar os estudantes sobre a relevância do cuidado com os bens públicos e do engajamento estudantil.</p>
-
-                <div class="info-grid">
-                    <div class="info-card">
-                        <h3>Objetivo General</h3>
-                        <p>Incentivar a preservação da infraestrutura escolar através do aprendizado ativo e colaborativo.</p>
-                    </div>
-                    <div class="info-card">
-                        <h3>Gamificação</h3>
-                        <p>Interatividade prática por meio de flashcards interativos, acompanhamento de progresso e desafios contínuos.</p>
-                    </div>
-                    <div class="info-card">
-                        <h3>Cidadania Ativa</h3>
-                        <p>Promover o senso de pertencimento e responsabilidade individual sobre o espaço coletivo.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
-    <footer>
-        <p>&copy; 2026 Game do Saber — E.E. Roberto Langer Junior. Todos os direitos reservados.</p>
+    <footer class="main-footer">
+        <p>&copy; 2026 Game do Saber - Projeto Escolar de Preservação do Patrimônio</p>
     </footer>
 
-    <script>
-        /**
-         * Core Application Module (ES6 Pattern)
-         */
-        const App = (() => {
-            const state = {
-                user: null,
-                flippedCards: new Set(),
-                cardsData: [
-                    { id: 1, category: "Patrimônio", q: "De quem é a responsabilidade de cuidar da escola?", a: "De todos: alunos, professores, gestão e comunidade!" },
-                    { id: 2, category: "Cidadania", q: "Por que conservar o mobiliário escolar?", a: "Para garantir conforto, segurança e sustentabilidade aos estudos." },
-                    { id: 3, category: "Ação Prática", q: "O que fazer ao ver um bem danificado?", a: "Informar imediatamente a direção ou zelar pela sua preservação." },
-                    { id: 4, category: "Coletividade", q: "Qual o impacto de uma escola bem cuidada?", a: "Melhora o rendimento escolar e gera um ambiente agradável." },
-                    { id: 5, category: "Sustentabilidade", q: "Como evitar o desperdício na escola?", a: "Economizando água, energia e cuidando dos materiais escolares." },
-                    { id: 6, category: "Respeito", q: "Como promover a convivência harmônica?", a: "Respeitando os colegas, professores e mantendo o espaço limpo." }
-                ]
-            };
-
-            const init = () => {
-                renderCards();
-                checkSavedUser();
-            };
-
-            const switchTab = (tabId) => {
-                document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-                
-                const targetTab = document.getElementById(tabId);
-                if (targetTab) targetTab.classList.add('active');
-                
-                const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => btn.getAttribute('onclick').includes(tabId));
-                if (activeBtn) activeBtn.classList.add('active');
-            };
-
-            const renderCards = () => {
-                const container = document.getElementById('flashcardsContainer');
-                container.innerHTML = state.cardsData.map(card => `
-                    <div class="flashcard" onclick="App.flipCard(this, ${card.id})">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front">
-                                <span class="tag">${card.category}</span>
-                                <p style="font-weight: 600;">${card.q}</p>
-                            </div>
-                            <div class="flashcard-back">
-                                <p>${card.a}</p>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            };
-
-            const flipCard = (element, id) => {
-                element.classList.toggle('flipped');
-                if (element.classList.contains('flipped')) {
-                    state.flippedCards.add(id);
-                } else {
-                    state.flippedCards.delete(id);
-                }
-                updateStats();
-            };
-
-            const updateStats = () => {
-                const count = state.flippedCards.size;
-                const total = state.cardsData.length;
-                const percentage = Math.round((count / total) * 100);
-                
-                document.getElementById('cardsCount').innerText = count;
-                document.getElementById('scoreText').innerText = `Progresso: ${percentage}%`;
-            };
-
-            const handleLogin = (e) => {
-                e.preventDefault();
-                const username = document.getElementById('username').value;
-                const turma = document.getElementById('turma').value;
-
-                state.user = { name: username, class: turma };
-                localStorage.setItem('gameUser', JSON.stringify(state.user));
-
-                updateUserStatus();
-                
-                const alertBox = document.getElementById('loginAlert');
-                alertBox.innerText = `Autenticação concluída com sucesso! Bem-vindo(a), ${username} (${turma}).`;
-                alertBox.style.display = 'block';
-
-                setTimeout(() => {
-                    switchTab('flashcards');
-                }, 1200);
-            };
-
-            const checkSavedUser = () => {
-                const saved = localStorage.getItem('gameUser');
-                if (saved) {
-                    state.user = JSON.parse(saved);
-                    updateUserStatus();
-                }
-            };
-
-            const updateUserStatus = () => {
-                if (state.user) {
-                    document.getElementById('userStatusText').innerText = `${state.user.name} (${state.user.class})`;
-                }
-            };
-
-            return { init, switchTab, flipCard, handleLogin };
-        })();
-
-        document.addEventListener('DOMContentLoaded', App.init);
-    </script>
+    <script src="script.js"></script>
 </body>
-
 </html>

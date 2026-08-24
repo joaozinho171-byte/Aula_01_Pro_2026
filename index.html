@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAME DO SABER | Plataforma Interativa de Preservação Escolar</title>
+    <title>GAME DO SABER | Preservação do Patrimônio Escolar</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,7 +25,6 @@
             --accent-color: #00e676;
             --accent-glow: rgba(0, 230, 118, 0.4);
             --secondary-color: #0288d1;
-            --secondary-dark: #01579b;
             --warning-color: #ff9800;
             --danger-color: #f44336;
             --gold-color: #ffd700;
@@ -68,7 +67,7 @@
             padding: 20px;
         }
 
-        /* Fundo de Canvas Dinâmico e Gradiante de Atmosfera */
+        /* Fundo Dinâmico de Partículas */
         #particles-canvas {
             position: fixed;
             top: 0;
@@ -94,7 +93,7 @@
         }
 
         /* ==========================================================================
-           2. LAYOUT PRINCIPAL E ESTRUTURA
+           2. ESTRUTURA E LAYOUT
            ========================================================================== */
         .main-wrapper {
             width: 100%;
@@ -106,7 +105,6 @@
             z-index: 1;
         }
 
-        /* Cabeçalho do Jogo */
         .header-section {
             text-align: center;
             display: flex;
@@ -167,7 +165,7 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Seção de Mídia e Conscientização */
+        /* Card de Destaque */
         .showcase-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -193,7 +191,8 @@
 
         .media-box img {
             width: 100%;
-            height: auto;
+            height: 260px;
+            object-fit: cover;
             border-radius: var(--radius-md);
             border: 2px solid var(--primary-light);
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
@@ -222,7 +221,7 @@
         }
 
         /* ==========================================================================
-           3. ESTILIZAÇÃO DOS CARDS DE TELA (LOGIN, QUIZ, RESULTADOS)
+           3. ESTILOS DAS TELAS DO JOGO
            ========================================================================== */
         .content-card {
             background: var(--card-bg);
@@ -235,7 +234,6 @@
             animation: slideUp var(--transition-smooth);
         }
 
-        /* Login */
         .card-title-group {
             text-align: center;
             margin-bottom: 30px;
@@ -307,7 +305,7 @@
             color: var(--text-main);
         }
 
-        /* Botões Globais */
+        /* Botões */
         .btn-action {
             border: none;
             padding: 16px 30px;
@@ -336,17 +334,6 @@
             background: linear-gradient(135deg, #5cba60, var(--primary-color));
         }
 
-        .btn-secondary-dark {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text-main);
-            border: 1px solid var(--card-border);
-        }
-
-        .btn-secondary-dark:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-        }
-
         .btn-danger-glow {
             background: linear-gradient(135deg, #e53935, #c62828);
             color: #fff;
@@ -358,7 +345,7 @@
             box-shadow: 0 6px 20px rgba(229, 57, 53, 0.5);
         }
 
-        /* Interface do Quiz */
+        /* Interface do Quiz (HUD) */
         .hud-status-bar {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
@@ -486,7 +473,7 @@
             animation: popIn 0.3s ease;
         }
 
-        /* Tela de Resultados e Ranking */
+        /* Resultados */
         .results-summary {
             text-align: center;
             display: flex;
@@ -581,7 +568,7 @@
         }
 
         /* ==========================================================================
-           4. ANIMAÇÕES E MEDIA QUERIES
+           4. ANIMAÇÕES E RESPONSIVIDADE
            ========================================================================== */
         @keyframes pulseGlow {
             0% { transform: scale(1); box-shadow: 0 0 20px rgba(76, 175, 80, 0.4); }
@@ -618,13 +605,12 @@
 
 <body>
 
-    <!-- Fundo Visual Dinâmico -->
     <canvas id="particles-canvas"></canvas>
     <div class="bg-overlay"></div>
 
     <main class="main-wrapper">
 
-        <!-- CABEÇALHO DA PLATAFORMA -->
+        <!-- CABEÇALHO -->
         <header class="header-section">
             <div class="brand-badge">
                 <i class="fa-solid fa-graduation-cap"></i>
@@ -638,27 +624,27 @@
             </div>
         </header>
 
-        <!-- SEÇÃO EM DESTAQUE - PRESERVAÇÃO -->
+        <!-- CARTÃO EM DESTAQUE -->
         <section class="showcase-card">
             <figure class="media-box">
-                <img src="days.jpeg" alt="Exemplo de manutenção de ventilador na escola" id="featured-img">
+                <img id="featured-img" src="days.jpeg" alt="Manutenção e cuidado na escola" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=800&q=80';">
                 <figcaption class="media-tag">
                     <i class="fa-solid fa-screwdriver-wrench"></i>
-                    <span>antes e depois - "ventilador"</span>
+                    <span>Antes e depois - Manutenção Preventiva</span>
                 </figcaption>
             </figure>
             <p class="awareness-desc">
-                O cuidado com o patrimônio da escola é responsabilidade compartilhada entre todos os estudantes e funcionários.
-                Manter os bens duráveis bem conservados gera um ambiente de aprendizado muito mais agradável e seguro.
+                O cuidado com o patrimônio escolar é responsabilidade de toda a comunidade.
+                Manter os bens bem conservados garante um espaço de aprendizado seguro e acolhedor para todos!
             </p>
         </section>
 
-        <!-- TELA 1: CADASTRO / LOGIN -->
+        <!-- TELA DE LOGIN -->
         <section class="content-card" id="login-screen">
             <div class="card-title-group">
                 <i class="fa-solid fa-user-astronaut card-icon-main"></i>
-                <h2>Entrar na Arena do Conhecimento</h2>
-                <p>Identifique-se para acumular pontos, liberar conquistas e entrar no Ranking Escolar!</p>
+                <h2>Entrar no Desafio</h2>
+                <p>Identifique-se para acumular pontos e entrar no Ranking Escolar!</p>
             </div>
 
             <form id="login-form" class="form-grid">
@@ -689,7 +675,7 @@
             </form>
         </section>
 
-        <!-- TELA 2: ARENA DO QUIZ -->
+        <!-- TELA DO QUIZ -->
         <section class="content-card hide" id="quiz-screen">
             <div class="hud-status-bar">
                 <div class="hud-item">
@@ -715,16 +701,14 @@
                 <h2 class="question-text" id="question-text">Carregando pergunta...</h2>
             </div>
 
-            <div class="options-list" id="options-list">
-                <!-- Botões inseridos via JS -->
-            </div>
+            <div class="options-list" id="options-list"></div>
 
             <div class="feedback-area">
                 <p class="feedback-msg" id="feedback-msg"></p>
             </div>
         </section>
 
-        <!-- TELA 3: PAINEL DE RESULTADOS E RANKING -->
+        <!-- TELA DE RESULTADOS -->
         <section class="content-card hide" id="result-screen">
             <div class="results-summary">
                 <div class="trophy-badge">
@@ -741,9 +725,7 @@
                         <i class="fa-solid fa-medal"></i>
                         <span>Top 5 Alunos Conscientes</span>
                     </h3>
-                    <ul class="leaderboard-table" id="leaderboard-table">
-                        <!-- Linhas geradas via JS -->
-                    </ul>
+                    <ul class="leaderboard-table" id="leaderboard-table"></ul>
                 </div>
 
                 <div class="action-group-buttons">
@@ -762,20 +744,20 @@
     </main>
 
     <footer class="footer-credits">
-        <p>&copy; 2026 GAME DO SABER - Projeto Educacional de Conscientização e Preservação Escolar</p>
+        <p>&copy; 2026 GAME DO SABER - Projeto Educacional de Conscientização Escolar</p>
     </footer>
 
     <!-- ==========================================================================
-       5. LÓGICA E SCRIPT COMPLETO DA APLICAÇÃO
+       5. LÓGICA E SCRIPT COMPLETO
        ========================================================================== -->
     <script>
-        /* --- BANCO DE DADOS COMPLETO DE PERGUNTAS --- */
+        /* --- BANCO DE DADOS DE PERGUNTAS --- */
         const questionsDB = [
             {
                 question: "O que fazer ao constatar uma carteira ou cadeira rabiscada na sala?",
                 options: [
                     { text: "Avisar um funcionário ou professor responsável para orientar a limpeza.", correct: true },
-                    { text: "Rabiscar mais um pouco para completar com outro desenho.", correct: false },
+                    { text: "Rabiscar mais um pouco para completar o desenho.", correct: false },
                     { text: "Ignorar, pois o material não me pertence individualmente.", correct: false },
                     { text: "Gravar um vídeo zombando do estado da cadeira.", correct: false }
                 ]
@@ -794,16 +776,16 @@
                 options: [
                     { text: "Deixar luzes e ventiladores ligados na sala vazia durante o recreio.", correct: false },
                     { text: "Desligar os ventiladores e lâmpadas sempre que todos saírem da sala.", correct: true },
-                    { text: "Ligar o ar-condicionado e manter janelas e portas totalmente abertas.", correct: false },
-                    { text: "Deixar equipamentos elétricos conectados direto na tomada no final de semana.", correct: false }
+                    { text: "Ligar o ar-condicionado e manter janelas e portas abertas.", correct: false },
+                    { text: "Deixar equipamentos elétricos conectados direto na tomada no fim de semana.", correct: false }
                 ]
             },
             {
                 question: "Como devemos manusear os livros didáticos e acervos da biblioteca?",
                 options: [
-                    { text: "Conservar limpos, sem rasgar, dobrar oásis ou rabiscar as páginas.", correct: true },
+                    { text: "Conservar limpos, sem rasgar, dobrar orelhas ou rabiscar as páginas.", correct: true },
                     { text: "Marcar páginas importantes usando caneta hidrocor permanente.", correct: false },
-                    { text: "Recortar ilustrações dos livros para colagens em trabalhos pessoais.", correct: false },
+                    { text: "Recortar ilustrações dos livros para colagens em trabalhos.", correct: false },
                     { text: "Emprestar para terceiros sem o registro formal na biblioteca.", correct: false }
                 ]
             },
@@ -835,16 +817,16 @@
                 ]
             },
             {
-                question: "Qual é a atitude correta ao utilizar quadras esportivas e materiais de Educação Física?",
+                question: "Qual é a atitude correta ao utilizar quadras e materiais de Educação Física?",
                 options: [
                     { text: "Usar de forma adequada e guardar todos os equipamentos após o treino.", correct: true },
                     { text: "Chutar as bolas contra as paredes e portas dos corredores.", correct: false },
                     { text: "Deixar as redes e bolas espalhadas na chuva ao final da aula.", correct: false },
-                    { text: "Usar calçados com trava de ferro no piso interno do ginásio.", correct: false }
+                    { text: "Usar calçados inadequados que danifiquem o piso interno do ginásio.", correct: false }
                 ]
             },
             {
-                question: "O que a pichação nas paredes externas e internas provoca no ambiente escolar?",
+                question: "O que a pichação nas paredes provoca no ambiente escolar?",
                 options: [
                     { text: "Sensação de desleixo, degradação do espaço e custos altos de pintura.", correct: true },
                     { text: "Valorização do patrimônio cultural do bairro.", correct: false },
@@ -863,7 +845,7 @@
             }
         ];
 
-        /* --- ESTADO GLOBAL DO JOGO --- */
+        /* --- ESTADO GLOBAL --- */
         let gameQuestions = [];
         let currentIdx = 0;
         let score = 0;
@@ -897,7 +879,7 @@
         const highScoreRecord = document.getElementById("high-score-record");
         const leaderboardTable = document.getElementById("leaderboard-table");
 
-        /* --- SINTETIZADOR DE ÁUDIO (WEB AUDIO API) --- */
+        /* --- SINTETIZADOR DE ÁUDIO WEB AUDIO API --- */
         function triggerAudio(type) {
             try {
                 if (!audioCtx) {
@@ -914,9 +896,9 @@
 
                 if (type === 'correct') {
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
-                    osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+                    osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
                     gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.35);
                     osc.start();
@@ -938,7 +920,7 @@
                     osc.stop(audioCtx.currentTime + 0.05);
                 }
             } catch (err) {
-                // Áudio opcional caso bloqueado pelo navegador
+                // Silencioso se áudio não for permitido
             }
         }
 
@@ -978,7 +960,7 @@
             usernameInput.value = "";
         }
 
-        /* --- LÓGICA DA ARENA DO QUIZ --- */
+        /* --- CONTROLE DO QUIZ --- */
         function initQuiz() {
             loginScreen.classList.add("hide");
             resultScreen.classList.add("hide");
@@ -988,7 +970,6 @@
             score = 0;
             currentIdx = 0;
 
-            // Embaralha o banco de perguntas
             gameQuestions = [...questionsDB].sort(() => Math.random() - 0.5);
 
             updateScoreHUD();
@@ -1003,11 +984,9 @@
             questionIndex.textContent = `Pergunta ${currentIdx + 1} de ${gameQuestions.length}`;
             questionText.textContent = q.question;
 
-            // Progresso
             const pPct = (currentIdx / gameQuestions.length) * 100;
             progressFill.style.width = `${pPct}%`;
 
-            // Opções
             optionsList.innerHTML = "";
             const shuffledOpts = [...q.options].sort(() => Math.random() - 0.5);
 
@@ -1023,6 +1002,7 @@
         }
 
         function runTimer() {
+            clearInterval(timer);
             timeLeft = 15;
             timerDisplay.textContent = `${timeLeft}s`;
 
@@ -1055,7 +1035,7 @@
             lockButtons();
 
             if (isCorrect) {
-                score += 10 + timeLeft; // Bônus de tempo
+                score += 10 + timeLeft;
                 triggerAudio('correct');
                 element.classList.add("correct-ans");
                 element.querySelector("i").className = "fa-solid fa-circle-check";
@@ -1093,12 +1073,12 @@
 
         /* --- FINALIZAÇÃO E RANKING --- */
         function completeQuiz() {
+            clearInterval(timer);
             quizScreen.classList.add("hide");
             resultScreen.classList.remove("hide");
 
             finalScoreOutput.textContent = `${player}, você fez um total de ${score} pontos!`;
 
-            // Atribuição de Níveis
             let title = "🌱 Aprendiz do Cuidado";
             if (score >= 200) {
                 title = "🏆 Guardião Supremo do Patrimônio";
@@ -1114,14 +1094,13 @@
         function persistScore(pName, pScore, pGrade) {
             let rank = JSON.parse(localStorage.getItem("gameSaber_leaderboard")) || [];
 
-            rank.push({ name: pName, score: pScore, grade: pGrade, date: new Date().toLocaleDateString() });
+            rank.push({ name: pName, score: pScore, grade: pGrade });
             rank.sort((a, b) => b.score - a.score);
-            rank = rank.slice(0, 5); // Mantém Top 5
+            rank = rank.slice(0, 5);
 
             localStorage.setItem("gameSaber_leaderboard", JSON.stringify(rank));
 
-            // Salva recorde pessoal
-            const personalBest = Math.max(pScore, localStorage.getItem(`highScore_${pName}`) || 0);
+            const personalBest = Math.max(pScore, parseInt(localStorage.getItem(`highScore_${pName}`) || "0", 10));
             localStorage.setItem(`highScore_${pName}`, personalBest);
             highScoreRecord.textContent = `Seu recorde pessoal atual: ${personalBest} pts`;
         }
@@ -1150,7 +1129,7 @@
             initQuiz();
         }
 
-        /* --- ANIMAÇÃO DE PARTICULAS NO CANVAS --- */
+        /* --- CANVA DE PARTICULAS --- */
         function initParticlesCanvas() {
             const canvas = document.getElementById("particles-canvas");
             const ctx = canvas.getContext("2d");
@@ -1206,7 +1185,6 @@
             renderLoop();
         }
 
-        // Inicializa ao carregar a página
         document.addEventListener("DOMContentLoaded", () => {
             initParticlesCanvas();
             verifySession();

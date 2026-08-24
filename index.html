@@ -4,410 +4,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAME-SABER | Quiz</title>
-    <link rel="stylesheet" href="style.css">
-
+    <title>GAME DO SABER</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+        * {
+            box-sizing: border-box;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            font-family: Arial, sans-serif;
         }
 
-        #container {
-            min-height: 90vh;
+        body {
+            background-color: #f0f2f5;
+            color: #333;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto;
+            min-height: 100vh;
         }
 
-        img {
-            width: 40%;
-            max-width: 300px;
-            height: auto;
-            border-radius: 8px;
-        }
-
-        /* Estilos dos Cards */
-        .card {
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        header {
             width: 100%;
-            box-sizing: border-box;
+            background-color: #1e3c72;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        /* Form / Login */
-        .login-form {
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        nav button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #1e3c72;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        nav button:hover {
+            background-color: #2a5298;
+        }
+
+        .tab-content {
+            display: none;
+            width: 90%;
+            max-width: 800px;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .active {
+            display: block;
+        }
+
+        /* Form Visual */
+        form {
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-top: 15px;
+            max-width: 350px;
+            margin: 0 auto;
         }
 
-        .login-input {
-            padding: 12px;
-            font-size: 1rem;
-            border: 2px solid #ccc;
-            border-radius: 6px;
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn-submit {
+            padding: 10px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Flashcards Visual */
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .card {
+            width: 220px;
+            height: 150px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
             text-align: center;
-            outline: none;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
         }
 
-        .login-input:focus {
-            border-color: #2e7d32;
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
         }
 
-        /* Quiz UI */
-        .info-bar {
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .card-front {
+            background-color: #3498db;
+            color: white;
             font-weight: bold;
-            margin-bottom: 15px;
-            background-color: #e8f5e9;
-            padding: 10px 15px;
+        }
+
+        .card-back {
+            background-color: #2ecc71;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
             border-radius: 8px;
-            color: #2e7d32;
-        }
-
-        .options-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-main {
-            background-color: #2e7d32;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            font-size: 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-main:hover:not(:disabled) {
-            background-color: #1b5e20;
-        }
-
-        .btn-main:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .btn-secondary {
-            background-color: #0288d1;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-
-        .btn-secondary:hover {
-            background-color: #01579b;
-        }
-
-        .feedback {
-            margin-top: 15px;
-            font-weight: bold;
-            min-height: 24px;
-        }
-
-        .badge {
-            display: inline-block;
-            background-color: #fbc02d;
-            color: #333;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .hide {
-            display: none;
+            margin: 15px 0;
         }
     </style>
 </head>
 
 <body>
 
-    <div id="container">
+    <header>
+        <h1><u>GAME DO SABER</u></h1>
+        <p>NOSSA ESCOLA, NOSSO COMPROMISSO</p>
+    </header>
 
-        <h1><b><u> GAME DO SABER </u></b></h1>
-        <p>NOSSA ESCOLA NOSSO COMPROMISSO</p>
+    <nav>
+        <button onclick="showTab('inicio')">Início</button>
+        <button onclick="showTab('sobre')">Sobre o Game</button>
+        <button onclick="showTab('flashcards')">Flash Cards</button>
+        <button onclick="showTab('login')">Login</button>
+    </nav>
 
+    <!-- ABA INÍCIO -->
+    <div id="inicio" class="tab-content active">
+        <h2>O QUE NÓS PODEMOS FAZER PARA TORNAR NOSSA ESCOLA AINDA MELHOR?</h2>
         <figure>
-            <img src="days.jpeg" alt="Antes e depois da manutenção do ventilador">
-            <figcaption><b>antes e depois - "ventilador"</b></figcaption>
+            <img src="days.jpeg" alt="Antes e depois do ventilador">
+            <figcaption><b>Antes e depois - "Ventilador"</b></figcaption>
         </figure>
+        <p style="margin-top: 15px;">
+            O cuidado com o patrimônio da escola é responsabilidade de todos os estudantes e funcionários.
+            Os bens duráveis são importantes para o desenvolvimento dos alunos e geram um ambiente melhor para todos.
+        </p>
+    </div>
 
-        <!-- 1. Painel de Login / Identificação -->
-        <div class="card" id="login-card">
-            <h2>Identifique-se para Jogar</h2>
-            <p>Digite seu nome ou apelido para começar o quiz e salvar sua pontuação:</p>
-            <form class="login-form" id="login-form">
-                <input type="text" id="username" class="login-input" placeholder="Seu Nome ou Apelido" required maxlength="20">
-                <button type="submit" class="btn-main">Entrar no Game</button>
-            </form>
-        </div>
+    <!-- ABA SOBRE O GAME -->
+    <div id="sobre" class="tab-content">
+        <h2>Sobre o Game do Saber</h2>
+        <br>
+        <p>O <b>Game do Saber</b> é uma iniciativa educacional interativa projetada para conscientizar os estudantes sobre a importância do engajamento escolar, preservação do patrimônio e aprendizado ativo.</p>
+        <br>
+        <p>Através de missões, quizzes e dinâmicas de cooperação, os alunos acumulam pontos ao realizar boas ações e demonstrar conhecimento sobre os conteúdos escolares e a cidadania.</p>
+    </div>
 
-        <!-- 2. Container do Quiz -->
-        <div class="card hide" id="quiz-card">
-            <div class="info-bar">
-                <span id="player-display">Jogador: </span>
-                <span id="score-tracker">Pontos: 0</span>
+    <!-- ABA FLASHCARDS -->
+    <div id="flashcards" class="tab-content">
+        <h2>Flash Cards Interativos</h2>
+        <p>Clique nos cartões para revelar as respostas!</p>
+
+        <div class="cards-container">
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">De quem é a responsabilidade de cuidar da escola?</div>
+                    <div class="card-back">De todos os estudantes e funcionários!</div>
+                </div>
             </div>
 
-            <h2 id="question-title">Carregando pergunta...</h2>
-            
-            <div class="options-grid" id="options-container">
-                <!-- Botões gerados via JS -->
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">Por que preservar o patrimônio público?</div>
+                    <div class="card-back">Para garantir um ambiente seguro e adequado ao aprendizado de todos.</div>
+                </div>
             </div>
 
-            <p class="feedback" id="feedback-text"></p>
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">Como posso contribuir no dia a dia?</div>
+                    <div class="card-back">Mantendo as salas limpas, cuidando das carteiras e respeitando os colegas.</div>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <!-- 3. Tela de Resultado Final -->
-        <div class="card hide" id="result-card">
-            <h2>Quiz Concluído! 🎉</h2>
-            <p id="final-score"></p>
-            <div id="achievement-badge" class="badge"></div>
-            <p id="high-score-display" style="margin-top: 15px; font-weight: bold; color: #555;"></p>
-            
-            <button class="btn-secondary" onclick="restartQuiz()">Jogar Novamente</button>
-            <button class="btn-secondary" style="background-color: #d32f2f;" onclick="logout()">Trocar de Usuário</button>
-        </div>
-
+    <!-- ABA LOGIN -->
+    <div id="login" class="tab-content">
+        <h2>Painel de Login</h2>
+        <br>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <input type="text" id="username" placeholder="Usuário ou Matrícula" required>
+            <input type="password" id="password" placeholder="Senha" required>
+            <button type="submit" class="btn-submit">Entrar</button>
+        </form>
+        <div id="loginMessage" style="margin-top: 15px; font-weight: bold;"></div>
     </div>
 
     <script>
-        const questionsList = [
-            {
-                question: "O que fazer ao ver uma mesa ou cadeira rabiscada na sala?",
-                options: [
-                    { text: "Avisar um professor ou funcionário para limparem", correct: true },
-                    { text: "Rabiscar mais um pouco para desenhar por cima", correct: false },
-                    { text: "Ignorar, pois não fui eu quem fiz", correct: false }
-                ]
-            },
-            {
-                question: "De quem é a responsabilidade de cuidar do patrimônio da escola?",
-                options: [
-                    { text: "Apenas dos faxineiros e diretores", correct: false },
-                    { text: "Apenas dos alunos da manhã", correct: false },
-                    { text: "De todos os estudantes, professores e funcionários", correct: true }
-                ]
-            },
-            {
-                question: "Qual atitude ajuda a economizar energia e manter os equipamentos seguros?",
-                options: [
-                    { text: "Deixar ventiladores e luzes ligados na sala vazia", correct: false },
-                    { text: "Desligar os aparelhos ao sair da sala e não mexer na fiação", correct: true },
-                    { text: "Mover o ventilador com força enquanto ele funciona", correct: false }
-                ]
-            },
-            {
-                question: "Como devemos tratar os livros e materiais da biblioteca escolar?",
-                options: [
-                    { text: "Manter limpos, sem rasgar ou rasurar as páginas", correct: true },
-                    { text: "Dobrar as páginas para marcar onde parou a leitura", correct: false },
-                    { text: "Levar para casa sem autorização da escola", correct: false }
-                ]
-            }
-        ];
-
-        let questions = [];
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let currentUser = "";
-        let audioCtx = null;
-
-        // Elementos HTML
-        const loginCard = document.getElementById("login-card");
-        const quizCard = document.getElementById("quiz-card");
-        const resultCard = document.getElementById("result-card");
-        const loginForm = document.getElementById("login-form");
-        const usernameInput = document.getElementById("username");
-        const playerDisplay = document.getElementById("player-display");
-        const questionTitle = document.getElementById("question-title");
-        const optionsContainer = document.getElementById("options-container");
-        const feedbackText = document.getElementById("feedback-text");
-        const scoreTracker = document.getElementById("score-tracker");
-        const finalScore = document.getElementById("final-score");
-        const achievementBadge = document.getElementById("achievement-badge");
-        const highScoreDisplay = document.getElementById("high-score-display");
-
-        // Sistema de Login
-        loginForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const name = usernameInput.value.trim();
-            if (name) {
-                currentUser = name;
-                localStorage.setItem("gameSaber_user", currentUser);
-                initGame();
-            }
-        });
-
-        function checkExistingUser() {
-            const savedUser = localStorage.getItem("gameSaber_user");
-            if (savedUser) {
-                currentUser = savedUser;
-                initGame();
-            }
+        // Alternar entre abas
+        function showTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
         }
 
-        function logout() {
-            localStorage.removeItem("gameSaber_user");
-            currentUser = "";
-            resultCard.classList.add("hide");
-            loginCard.classList.remove("hide");
-            usernameInput.value = "";
+        // Girar Flashcards
+        function flipCard(card) {
+            card.classList.toggle('flipped');
         }
 
-        // Web Audio API
-        function playSound(type) {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+        // Simulação de Login Funcional
+        function handleLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('username').value;
+            const message = document.getElementById('loginMessage');
 
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            if (type === 'correct') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.3);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.3);
-            } else {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.3);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.3);
-            }
+            message.style.color = "green";
+            message.innerText = `Bem-vindo(a), ${user}! Login realizado com sucesso.`;
+            document.getElementById('loginForm').reset();
         }
-
-        // Lógica do Quiz
-        function initGame() {
-            loginCard.classList.add("hide");
-            resultCard.classList.add("hide");
-            quizCard.classList.remove("hide");
-            
-            playerDisplay.textContent = `Jogador: ${currentUser}`;
-            currentQuestionIndex = 0;
-            score = 0;
-            
-            // Embaralha as perguntas
-            questions = [...questionsList].sort(() => Math.random() - 0.5);
-            
-            updateScoreDisplay();
-            showQuestion();
-        }
-
-        function updateScoreDisplay() {
-            scoreTracker.textContent = `Pontos: ${score * 10}`;
-        }
-
-        function showQuestion() {
-            feedbackText.textContent = "";
-            const currentQuestion = questions[currentQuestionIndex];
-            questionTitle.textContent = `${currentQuestionIndex + 1}. ${currentQuestion.question}`;
-            optionsContainer.innerHTML = "";
-
-            currentQuestion.options.forEach(option => {
-                const button = document.createElement("button");
-                button.textContent = option.text;
-                button.classList.add("btn-main");
-                button.addEventListener("click", () => selectOption(option.correct));
-                optionsContainer.appendChild(button);
-            });
-        }
-
-        function selectOption(isCorrect) {
-            const buttons = optionsContainer.querySelectorAll("button");
-            buttons.forEach(btn => btn.disabled = true);
-
-            if (isCorrect) {
-                score++;
-                updateScoreDisplay();
-                playSound('correct');
-                feedbackText.style.color = "green";
-                feedbackText.textContent = "Resposta Correta! 🎉 (+10 pts)";
-            } else {
-                playSound('wrong');
-                feedbackText.style.color = "red";
-                feedbackText.textContent = "Resposta Incorreta! ❌";
-            }
-
-            setTimeout(() => {
-                currentQuestionIndex++;
-                if (currentQuestionIndex < questions.length) {
-                    showQuestion();
-                } else {
-                    showResult();
-                }
-            }, 1200);
-        }
-
-        function showResult() {
-            quizCard.classList.add("hide");
-            resultCard.classList.remove("hide");
-            
-            const totalPoints = score * 10;
-            const maxPoints = questions.length * 10;
-            finalScore.textContent = `${currentUser}, sua pontuação foi: ${totalPoints} de ${maxPoints} pontos! (${score}/${questions.length} acertos)`;
-
-            // Sistema de Conquistas/Títulos
-            let badgeText = "";
-            if (score === questions.length) {
-                badgeText = "🏆 Nível: Guardião Máximo da Escola!";
-            } else if (score >= questions.length / 2) {
-                badgeText = "⭐ Nível: Protetor do Patrimônio";
-            } else {
-                badgeText = "🌱 Nível: Aprendiz de Cuidado Escolar";
-            }
-            achievementBadge.textContent = badgeText;
-
-            // Recorde (LocalStorage)
-            const savedHighScore = localStorage.getItem(`highScore_${currentUser}`) || 0;
-            if (totalPoints > savedHighScore) {
-                localStorage.setItem(`highScore_${currentUser}`, totalPoints);
-                highScoreDisplay.textContent = `🎉 Novo Recorde Pessoal: ${totalPoints} PONTOS!`;
-            } else {
-                highScoreDisplay.textContent = `Seu Recorde Pessoal Atual: ${savedHighScore} PONTOS`;
-            }
-        }
-
-        function restartQuiz() {
-            initGame();
-        }
-
-        // Verifica se o usuário já fez login anteriormente
-        checkExistingUser();
     </script>
 
 </body>
+
 </html>

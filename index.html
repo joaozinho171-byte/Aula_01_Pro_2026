@@ -4,785 +4,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game do Saber - Colégio Estadual Roberto Langer Junior</title>
-    <!-- Google Fonts & Font Awesome Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>GAME-SABER | Quiz</title>
+    <link rel="stylesheet" href="style.css">
 
     <style>
-        /* RESET & GLOBAL STYLES */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        :root {
-            --primary: #1e3a8a;
-            --primary-light: #3b82f6;
-            --accent: #f59e0b;
-            --bg-dark: #0f172a;
-            --bg-card: rgba(255, 255, 255, 0.95);
-            --text-dark: #1e293b;
-            --text-muted: #64748b;
-            --radius: 16px;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            color: var(--text-dark);
-            min-height: 100vh;
-            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
         }
 
-        /* HEADER & NAVIGATION */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem 2rem;
+        #container {
+            min-height: 90vh;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            background: linear-gradient(135deg, #3b82f6, #ec4899);
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-        }
-
-        .logo-text h1 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            line-height: 1.1;
-        }
-
-        .logo-text span {
-            font-size: 0.75rem;
-            color: #94a3b8;
-        }
-
-        nav {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        nav a {
-            color: #e2e8f0;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-        }
-
-        nav a:hover {
-            color: #3b82f6;
-        }
-
-        .btn-auth {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            color: #fff !important;
-            padding: 0.6rem 1.4rem;
-            border-radius: 30px;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .btn-auth:hover {
-            transform: translateY(-2px);
-        }
-
-        /* MAIN LAYOUT CONTAINER */
-        .container {
-            max-width: 1200px;
+            text-align: center;
+            max-width: 700px;
             margin: 0 auto;
-            padding: 2rem 1.5rem;
         }
 
-        /* HERO SECTION */
-        .hero-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 3.5rem 2rem;
-            text-align: center;
-            color: #fff;
-            margin-bottom: 3rem;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        .hero-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
-            pointer-events: none;
-        }
-
-        .hero-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #60a5fa, #f472b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.8rem;
-            text-transform: uppercase;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: #cbd5e1;
-            font-weight: 300;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: rgba(245, 158, 11, 0.2);
-            color: #fbbf24;
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            padding: 0.4rem 1.2rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* SECTION TITLES */
-        .section-header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-            color: #fff;
-        }
-
-        .section-header h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-header h2::after {
-            content: '';
-            display: block;
-            width: 60%;
-            height: 4px;
-            background: #3b82f6;
-            margin: 8px auto 0;
-            border-radius: 2px;
-        }
-
-        .section-header p {
-            color: #94a3b8;
-            margin-top: 8px;
-            font-size: 1rem;
-        }
-
-        /* SECTIONS WRAPPER */
-        section {
-            margin-bottom: 4rem;
-        }
-
-        /* GAME DO SABER SHOWCASE */
-        .showcase-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        .showcase-card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 1.8rem;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
-        }
-
-        .showcase-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .image-wrapper {
-            width: 100%;
-            height: 220px;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 1.2rem;
-            background: #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .image-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            color: #64748b;
-        }
-
-        .image-placeholder i {
-            font-size: 2.5rem;
-            color: #3b82f6;
-        }
-
-        .showcase-card h3 {
-            color: var(--primary);
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .showcase-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        /* SCHOOL HISTORY SECTION */
-        .history-card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 2.5rem;
-            box-shadow: var(--shadow);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .history-text h3 {
-            color: var(--primary);
-            font-size: 1.6rem;
-            margin-bottom: 1rem;
-        }
-
-        .history-text p {
-            color: #334155;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            margin-bottom: 1rem;
-        }
-
-        .history-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .stat-box {
-            background: #f1f5f9;
-            padding: 1rem;
-            border-radius: 12px;
-            text-align: center;
-            border-left: 4px solid var(--primary-light);
-        }
-
-        .stat-box strong {
-            display: block;
-            font-size: 1.4rem;
-            color: var(--primary);
-        }
-
-        .stat-box span {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        /* FLASH CARDS SECTION */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.8rem;
-        }
-
-        .flashcard {
-            background-color: transparent;
-            height: 240px;
-            perspective: 1000px;
-            cursor: pointer;
-        }
-
-        .flashcard-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-        }
-
-        .flashcard.flipped .flashcard-inner {
-            transform: rotateY(180deg);
-        }
-
-        .flashcard-front,
-        .flashcard-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .flashcard-front {
-            background: linear-gradient(135deg, #ffffff, #f8fafc);
-            color: var(--primary);
-            border: 2px solid #e2e8f0;
-        }
-
-        .flashcard-front i {
-            font-size: 2.2rem;
-            color: var(--primary-light);
-        }
-
-        .flashcard-front h4 {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .flashcard-front span {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            background: #e0f2fe;
-            padding: 0.2rem 0.8rem;
-            border-radius: 12px;
-        }
-
-        .flashcard-back {
-            background: linear-gradient(135deg, #1e3a8a, #2563eb);
-            color: #fff;
-            transform: rotateY(180deg);
-        }
-
-        .flashcard-back p {
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        /* MODAL DE LOGIN & CADASTRO */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .auth-modal {
-            background: #ffffff;
-            width: 100%;
-            max-width: 440px;
-            border-radius: 24px;
-            padding: 2.5rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.active .auth-modal {
-            transform: translateY(0);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: #f1f5f9;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            font-size: 1.1rem;
-            color: #64748b;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .close-btn:hover {
-            background: #e2e8f0;
-            color: #0f172a;
-        }
-
-        /* TABS LOGIN / CADASTRO */
-        .auth-tabs {
-            display: flex;
-            background: #f1f5f9;
-            padding: 4px;
-            border-radius: 12px;
-            margin-bottom: 1.8rem;
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 0.6rem;
-            border: none;
-            background: transparent;
-            font-weight: 600;
-            color: #64748b;
+        img {
+            width: 40%;
+            max-width: 300px;
+            height: auto;
             border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
         }
 
-        .auth-tab.active {
-            background: #ffffff;
-            color: var(--primary);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 0.4rem;
-        }
-
-        .form-group input {
+        /* Estilos do Quiz */
+        .quiz-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s;
+            box-sizing: border-box;
         }
 
-        .form-group input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        .score-tracker {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2e7d32;
+            font-size: 1.2rem;
         }
 
-        .form-submit-btn {
-            width: 100%;
-            padding: 0.85rem;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            color: #fff;
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-option {
+            background-color: #2e7d32;
+            color: white;
             border: none;
-            border-radius: 10px;
+            padding: 12px 20px;
             font-size: 1rem;
-            font-weight: 600;
+            border-radius: 6px;
             cursor: pointer;
-            margin-top: 0.5rem;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: background 0.2s;
         }
 
-        .form-submit-btn:hover {
-            opacity: 0.95;
+        .btn-option:hover:not(:disabled) {
+            background-color: #1b5e20;
         }
 
-        .form-footer {
-            margin-top: 1rem;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #64748b;
+        .btn-option:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
-        /* FOOTER */
-        footer {
-            background: #090d16;
-            color: #94a3b8;
-            padding: 2.5rem;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 0.9rem;
+        .btn-restart {
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .history-card {
-                grid-template-columns: 1fr;
-            }
+        .btn-restart:hover {
+            background-color: #01579b;
+        }
 
-            .hero-title {
-                font-size: 2rem;
-            }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 24px;
+        }
 
-            header {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            nav {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
+        .hide {
+            display: none;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- TOP HEADER / LAYOUT MODERN -->
-    <header>
-        <a href="#" class="logo-container">
-            <div class="logo-icon">
-                <i class="fa-solid fa-gamepad"></i>
+    <div id="container">
+
+        <h1><b><u> GAME DO SABER </u></b></h1>
+        <p>NOSSA ESCOLA NOSSO COMPROMISSO</p>
+        <p><u>O QUE NÓS PODEMOS FAZER PARA TORNAR NOSSA ESCOLA AINDA MELHOR?</u></p>
+
+        <figure>
+            <img src="days.jpeg" alt="Antes e depois da manutenção do ventilador">
+            <figcaption><b>antes e depois - "ventilador"</b></figcaption>
+        </figure>
+
+        <!-- Container do Quiz -->
+        <div class="quiz-card" id="quiz">
+            <div class="score-tracker" id="score-tracker">Pontos: 0</div>
+            <h2 id="question-title">Carregando pergunta...</h2>
+            
+            <div class="options-grid" id="options-container">
+                <!-- Botões inseridos via JavaScript -->
             </div>
-            <div class="logo-text">
-                <h1>GAME DO SABER</h1>
-                <span>C.E. Roberto Langer Junior</span>
-            </div>
-        </a>
 
-        <nav>
-            <a href="#game-saber"><i class="fa-solid fa-lightbulb"></i> O Projeto</a>
-            <a href="#historia"><i class="fa-solid fa-school"></i> A Escola</a>
-            <a href="#flashcards"><i class="fa-solid fa-clone"></i> Flash Cards</a>
-            <button class="btn-auth" onclick="openAuthModal()"><i class="fa-solid fa-user"></i> Entrar / Cadastrar</button>
-        </nav>
-    </header>
-
-    <div class="container">
-
-        <!-- HERO SECTION -->
-        <div class="hero-card">
-            <span class="hero-badge"><i class="fa-solid fa-star"></i> Nossa Escola, Nosso Compromisso</span>
-            <h1 class="hero-title">Game do Saber</h1>
-            <p class="hero-subtitle">Conscientização, preservação do patrimônio público e cidadania em ação!</p>
-            <p style="max-width: 700px; margin: 0 auto; color: #94a3b8; font-size: 0.95rem;">
-                Transformando o ambiente escolar através do engajamento estudantil, cuidado com a estrutura e aprendizado interativo.
-            </p>
+            <p class="feedback" id="feedback-text"></p>
         </div>
 
-        <!-- GAME DO SABER SHOWCASE -->
-        <section id="game-saber">
-            <div class="section-header">
-                <h2>Game do Saber em Ação</h2>
-                <p>O que podemos fazer para tornar nossa escola ainda melhor?</p>
-            </div>
-
-            <div class="showcase-grid">
-                <!-- CARD 1 -->
-                <div class="showcase-card">
-                    <div class="image-wrapper">
-                        <!-- Substituir o src por "days.jpeg" para carregar a imagem local -->
-                        <img src="days.jpeg" alt="Antes e Depois Ventilador" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="image-placeholder" style="display: none;">
-                            <i class="fa-solid fa-fan"></i>
-                            <span>Imagem: Manutenção do Ventilador</span>
-                        </div>
-                    </div>
-                    <h3>Antes & Depois: Ventiladores</h3>
-                    <p>
-                        Ações diretas de cuidado e recuperação do ambiente de sala de aula. O zelo com a ventilação e o mobiliário garante conforto térmico para todos os alunos.
-                    </p>
-                </div>
-
-                <!-- CARD 2 -->
-                <div class="showcase-card">
-                    <div class="image-wrapper">
-                        <div class="image-placeholder">
-                            <i class="fa-solid fa-paintbrush"></i>
-                            <span>Revitalização de Espaços</span>
-                        </div>
-                    </div>
-                    <h3>Cuidado com o Patrimônio</h3>
-                    <p>
-                        Preservar paredes, carteiras, laboratórios e quadras é responsabilidade compartilhada de estudantes, professores e funcionários.
-                    </p>
-                </div>
-
-                <!-- CARD 3 -->
-                <div class="showcase-card">
-                    <div class="image-wrapper">
-                        <div class="image-placeholder">
-                            <i class="fa-solid fa-hands-holding-circle"></i>
-                            <span>Ambiente Coletivo</span>
-                        </div>
-                    </div>
-                    <h3>Cidadania & Respeito</h3>
-                    <p>
-                        Ambientes limpos e bem-cuidados geram melhor rendimento escolar, integração comunitária e orgulho do local onde estudamos.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SEÇÃO HISTÓRIA DA ESCOLA -->
-        <section id="historia">
-            <div class="section-header">
-                <h2>História & Tradição</h2>
-                <p>Conheça o Colégio Estadual Roberto Langer Junior</p>
-            </div>
-
-            <div class="history-card">
-                <div class="history-text">
-                    <h3>Compromisso com o Ensino em Curitiba</h3>
-                    <p>
-                        Localizado no bairro Boqueirão, em Curitiba - PR (Rua Albino Frederico Foerster, 4), o <strong>Colégio Estadual Roberto Langer Junior (E.E.F.M.P.)</strong> é uma referência em ensino público no estado do Paraná.
-                    </p>
-                    <p>
-                        A instituição atende centenas de alunos no Ensino Fundamental, Ensino Médio e cursos técnicos profissionalizantes, como o curso de <em>Técnico em Desenvolvimento de Sistemas</em>.
-                    </p>
-                    <p>
-                        Além da excelência pedagógica, a escola promove ativamente projetos sociais de combate ao bullying, arte, esportes e conscientização cívica através do projeto <strong>Game do Saber</strong>.
-                    </p>
-                </div>
-
-                <div>
-                    <div class="history-stats">
-                        <div class="stat-box">
-                            <strong>+880</strong>
-                            <span>Alunos Matriculados</span>
-                        </div>
-                        <div class="stat-box">
-                            <strong>60+</strong>
-                            <span>Professores & Equipe</span>
-                        </div>
-                        <div class="stat-box">
-                            <strong>Integral & Técnico</strong>
-                            <span>Modalidades de Ensino</span>
-                        </div>
-                        <div class="stat-box">
-                            <strong>Boqueirão</strong>
-                            <span>Curitiba - PR</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SEÇÃO FLASH CARDS INTERATIVOS -->
-        <section id="flashcards">
-            <div class="section-header">
-                <h2>Flash Cards do Saber</h2>
-                <p>Clique nos cards para virar e testar seus conhecimentos sobre o patrimônio e a escola!</p>
-            </div>
-
-            <div class="cards-grid">
-                <!-- FLASHCARD 1 -->
-                <div class="flashcard" onclick="flipCard(this)">
-                    <div class="flashcard-inner">
-                        <div class="flashcard-front">
-                            <i class="fa-solid fa-shield-halved"></i>
-                            <h4>Patrimônio Público</h4>
-                            <span>Clique para revelar</span>
-                        </div>
-                        <div class="flashcard-back">
-                            <p><strong>De quem é o patrimônio público?</strong><br>É de toda a sociedade! Pertence a todos os estudantes e cidadãos, por isso devemos cuidar e preservar.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FLASHCARD 2 -->
-                <div class="flashcard" onclick="flipCard(this)">
-                    <div class="flashcard-inner">
-                        <div class="flashcard-front">
-                            <i class="fa-solid fa-screwdriver-wrench"></i>
-                            <h4>Bens Duráveis</h4>
-                            <span>Clique para revelar</span>
-                        </div>
-                        <div class="flashcard-back">
-                            <p><strong>O que são Bens Duráveis na escola?</strong><br>Carteiras, ventiladores, computadores e quadros. Duram muitos anos se forem bem conservados!</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FLASHCARD 3 -->
-                <div class="flashcard" onclick="flipCard(this)">
-                    <div class="flashcard-inner">
-                        <div class="flashcard-front">
-                            <i class="fa-solid fa-hands-clapping"></i>
-                            <h4>Dever do Estudante</h4>
-                            <span>Clique para revelar</span>
-                        </div>
-                        <div class="flashcard-back">
-                            <p><strong>Qual a nossa missão?</strong><br>Manter as salas limpas, não pichar paredes, desligar aparelhos ao sair e respeitar colegas e professores.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FLASHCARD 4 -->
-                <div class="flashcard" onclick="flipCard(this)">
-                    <div class="flashcard-inner">
-                        <div class="flashcard-front">
-                            <i class="fa-solid fa-code"></i>
-                            <h4>Curso Técnico</h4>
-                            <span>Clique para revelar</span>
-                        </div>
-                        <div class="flashcard-back">
-                            <p><strong>Desenvolvimento de Sistemas:</strong><br>O Colégio Roberto Langer Jr oferece formação técnica em programação para preparar os alunos ao mercado de tecnologia!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- Tela de Resultado Final -->
+        <div class="quiz-card hide" id="result-card">
+            <h2>Quiz Concluído! 🎉</h2>
+            <p id="final-score"></p>
+            <button class="btn-restart" onclick="restartQuiz()">Jogar Novamente</button>
+        </div>
 
     </div>
 
-    <!-- MODAL PAINEL DE LOGIN / CADASTRO -->
-    <div class="modal-overlay" id="authModal">
-        <div class="auth-modal">
-            <button class="close-btn" onclick="close
+    <script>
+        const questions = [
+            {
+                question: "O que fazer ao ver uma mesa ou cadeira rabiscada na sala?",
+                options: [
+                    { text: "Avisar um professor ou funcionário para limparem", correct: true },
+                    { text: "Rabiscar mais um pouco para desenhar por cima", correct: false },
+                    { text: "Ignorar, pois não fui eu quem fiz", correct: false }
+                ]
+            },
+            {
+                question: "De quem é a responsabilidade de cuidar do patrimônio da escola?",
+                options: [
+                    { text: "Apenas dos faxineiros e diretores", correct: false },
+                    { text: "Apenas dos alunos da manhã", correct: false },
+                    { text: "De todos os estudantes, professores e funcionários", correct: true }
+                ]
+            },
+            {
+                question: "Qual atitude ajuda a economizar energia e manter os equipamentos seguros?",
+                options: [
+                    { text: "Deixar ventiladores e luzes ligados na sala vazia", correct: false },
+                    { text: "Desligar os aparelhos ao sair da sala e não mexer na fiação", correct: true },
+                    { text: "Mover o ventilador com força enquanto ele funciona", correct: false }
+                ]
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let audioCtx = null;
+
+        const questionTitle = document.getElementById("question-title");
+        const optionsContainer = document.getElementById("options-container");
+        const feedbackText = document.getElementById("feedback-text");
+        const scoreTracker = document.getElementById("score-tracker");
+        const quizCard = document.getElementById("quiz");
+        const resultCard = document.getElementById("result-card");
+        const finalScore = document.getElementById("final-score");
+
+        // Função para gerar efeitos sonoros via Web Audio API
+        function playSound(type) {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                // Som agudo de acerto
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // Nota D5
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); // Nota A5
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else {
+                // Som grave de erro
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            }
+        }
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            updateScoreDisplay();
+            resultCard.classList.add("hide");
+            quizCard.classList.remove("hide");
+            showQuestion();
+        }
+
+        function updateScoreDisplay() {
+            scoreTracker.textContent = `Pontos: ${score * 10}`;
+        }
+
+        function showQuestion() {
+            feedbackText.textContent = "";
+            const currentQuestion = questions[currentQuestionIndex];
+            questionTitle.textContent = currentQuestion.question;
+            optionsContainer.innerHTML = "";
+
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement("button");
+                button.textContent = option.text;
+                button.classList.add("btn-option");
+                button.addEventListener("click", () => selectOption(option.correct));
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function selectOption(isCorrect) {
+            // Desabilita os botões para evitar múltiplos cliques na mesma pergunta
+            const buttons = optionsContainer.querySelectorAll("button");
+            buttons.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                score++;
+                updateScoreDisplay();
+                playSound('correct');
+                feedbackText.style.color = "green";
+                feedbackText.textContent = "Resposta Correta! 🎉 (+10 pts)";
+            } else {
+                playSound('wrong');
+                feedbackText.style.color = "red";
+                feedbackText.textContent = "Resposta Incorreta! ❌";
+            }
+
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    showQuestion();
+                } else {
+                    showResult();
+                }
+            }, 1200);
+        }
+
+        function showResult() {
+            quizCard.classList.add("hide");
+            resultCard.classList.remove("hide");
+            const totalPoints = score * 10;
+            const maxPoints = questions.length * 10;
+            finalScore.textContent = `Sua pontuação total foi: ${totalPoints} de ${maxPoints} pontos! (${score}/${questions.length} acertos)`;
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+
+        // Inicia o quiz ao carregar a página
+        startQuiz();
+    </script>
+
+</body>
+</html>

@@ -4,168 +4,1213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAME DO SABER | Quiz Interativo</title>
+    <title>GAME DO SABER | Plataforma Interativa de Preservação Escolar</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome para Ícones -->
+    <!-- FontAwesome 6 para Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ==========================================================================
+           1. VARIÁVEIS GLOBAIS E RESET CSS
+           ========================================================================== */
+        :root {
+            --primary-color: #2e7d32;
+            --primary-light: #4caf50;
+            --primary-dark: #1b5e20;
+            --accent-color: #00e676;
+            --accent-glow: rgba(0, 230, 118, 0.4);
+            --secondary-color: #0288d1;
+            --secondary-dark: #01579b;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --gold-color: #ffd700;
+            
+            --bg-dark: #070a13;
+            --card-bg: rgba(18, 26, 43, 0.88);
+            --card-border: rgba(255, 255, 255, 0.12);
+            --card-hover: rgba(30, 42, 68, 0.95);
+            
+            --text-main: #ffffff;
+            --text-muted: #90a4ae;
+            --text-dim: #607d8b;
+            
+            --font-main: 'Poppins', sans-serif;
+            --transition-fast: 0.2s ease;
+            --transition-smooth: 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-main);
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Fundo de Canvas Dinâmico e Gradiante de Atmosfera */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(46, 125, 50, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(2, 136, 209, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(7, 10, 19, 0.9) 0%, rgba(7, 10, 19, 0.98) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ==========================================================================
+           2. LAYOUT PRINCIPAL E ESTRUTURA
+           ========================================================================== */
+        .main-wrapper {
+            width: 100%;
+            max-width: 850px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            z-index: 1;
+        }
+
+        /* Cabeçalho do Jogo */
+        .header-section {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .brand-badge {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #fff;
+            box-shadow: 0 0 25px rgba(76, 175, 80, 0.5);
+            animation: pulseGlow 2.5s infinite;
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #ffffff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
+        }
+
+        .motto {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            letter-spacing: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .divider-line {
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            border-radius: 2px;
+            margin: 4px 0;
+        }
+
+        .question-banner {
+            color: var(--text-muted);
+            font-size: 1rem;
+            max-width: 650px;
+            line-height: 1.5;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Seção de Mídia e Conscientização */
+        .showcase-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .media-box {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .media-box img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--primary-light);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+            transition: transform var(--transition-smooth);
+        }
+
+        .media-box img:hover {
+            transform: scale(1.02);
+        }
+
+        .media-tag {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .awareness-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.6;
+            max-width: 700px;
+        }
+
+        /* ==========================================================================
+           3. ESTILIZAÇÃO DOS CARDS DE TELA (LOGIN, QUIZ, RESULTADOS)
+           ========================================================================== */
+        .content-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(16px);
+            border-radius: var(--radius-lg);
+            padding: 35px;
+            width: 100%;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            animation: slideUp var(--transition-smooth);
+        }
+
+        /* Login */
+        .card-title-group {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .card-icon-main {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 10px var(--accent-glow));
+        }
+
+        .card-title-group h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .card-title-group p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .input-icon-left {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            transition: color var(--transition-fast);
+        }
+
+        .custom-input-field {
+            width: 100%;
+            padding: 16px 20px 16px 52px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: all var(--transition-fast);
+        }
+
+        .custom-input-field:focus {
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .custom-input-field:focus + .input-icon-left {
+            color: var(--accent-color);
+        }
+
+        .custom-input-field option {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+        }
+
+        /* Botões Globais */
+        .btn-action {
+            border: none;
+            padding: 16px 30px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all var(--transition-smooth);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary-glow {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-primary-glow:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
+            background: linear-gradient(135deg, #5cba60, var(--primary-color));
+        }
+
+        .btn-secondary-dark {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
+        }
+
+        .btn-secondary-dark:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger-glow {
+            background: linear-gradient(135deg, #e53935, #c62828);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(229, 57, 53, 0.3);
+        }
+
+        .btn-danger-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 57, 53, 0.5);
+        }
+
+        /* Interface do Quiz */
+        .hud-status-bar {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 14px 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .hud-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .hud-timer {
+            color: var(--warning-color);
+            justify-content: center;
+        }
+
+        .hud-score {
+            color: var(--accent-color);
+            justify-content: flex-end;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-light));
+            transition: width 0.4s ease;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .question-header {
+            margin-bottom: 25px;
+        }
+
+        .question-idx {
+            color: var(--accent-color);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.35rem;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .btn-option-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 18px 22px;
+            border-radius: var(--radius-md);
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            line-height: 1.4;
+        }
+
+        .btn-option-card:hover:not(:disabled) {
+            background: var(--card-hover);
+            border-color: var(--accent-color);
+            transform: translateX(8px);
+        }
+
+        .btn-option-card:disabled {
+            cursor: not-allowed;
+            opacity: 0.75;
+        }
+
+        .btn-option-card.correct-ans {
+            background: rgba(46, 125, 50, 0.6) !important;
+            border-color: var(--accent-color) !important;
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
+        }
+
+        .btn-option-card.wrong-ans {
+            background: rgba(229, 57, 53, 0.6) !important;
+            border-color: var(--danger-color) !important;
+            box-shadow: 0 0 15px rgba(229, 57, 53, 0.3);
+        }
+
+        .feedback-area {
+            margin-top: 25px;
+            min-height: 35px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feedback-msg {
+            font-size: 1.2rem;
+            font-weight: 700;
+            animation: popIn 0.3s ease;
+        }
+
+        /* Tela de Resultados e Ranking */
+        .results-summary {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .trophy-badge {
+            font-size: 4.5rem;
+            color: var(--gold-color);
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
+            animation: floatSlow 3s infinite ease-in-out;
+        }
+
+        .score-output {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .level-badge {
+            background: linear-gradient(135deg, var(--gold-color), #ff8c00);
+            color: #000;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .high-score-record {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .leaderboard-box {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        .leaderboard-title {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .leaderboard-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .action-group-buttons {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .footer-credits {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-top: 20px;
+        }
+
+        .hide {
+            display: none !important;
+        }
+
+        /* ==========================================================================
+           4. ANIMAÇÕES E MEDIA QUERIES
+           ========================================================================== */
+        @keyframes pulseGlow {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(76, 175, 80, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 35px rgba(76, 175, 80, 0.7); }
+            100% { transform: scale(1); box-shadow: 0 0 20px rgba(76, 175, 80, 0.4); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 650px) {
+            .main-title { font-size: 2rem; }
+            .motto { font-size: 0.9rem; }
+            .content-card { padding: 20px; }
+            .hud-status-bar { grid-template-columns: 1fr; gap: 8px; text-align: center; }
+            .hud-timer, .hud-score { justify-content: center; }
+            .action-group-buttons { flex-direction: column; }
+            .btn-action { width: 100%; }
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- Fundo de Partículas e Animação -->
+    <!-- Fundo Visual Dinâmico -->
     <canvas id="particles-canvas"></canvas>
-    <div class="bg-gradient-overlay"></div>
+    <div class="bg-overlay"></div>
 
-    <main class="main-container">
+    <main class="main-wrapper">
 
-        <!-- CABEÇALHO DO PROJETO -->
-        <header class="game-header">
-            <div class="logo-badge">
+        <!-- CABEÇALHO DA PLATAFORMA -->
+        <header class="header-section">
+            <div class="brand-badge">
                 <i class="fa-solid fa-graduation-cap"></i>
             </div>
-            <h1 class="title-glitch">GAME DO SABER</h1>
-            <p class="subtitle">NOSSA ESCOLA, NOSSO COMPROMISSO</p>
-            <div class="header-divider"></div>
-            <p class="question-banner">
-                <i class="fa-solid fa-lightbulb"></i>
+            <h1 class="main-title">GAME DO SABER</h1>
+            <p class="motto">NOSSA ESCOLA, NOSSO COMPROMISSO</p>
+            <div class="divider-line"></div>
+            <div class="question-banner">
+                <i class="fa-solid fa-lightbulb" style="color: var(--gold-color);"></i>
                 <u>O QUE NÓS PODEMOS FAZER PARA TORNAR NOSSA ESCOLA AINDA MELHOR?</u>
-            </p>
+            </div>
         </header>
 
-        <!-- SEÇÃO DE DESTAQUE / ANTES E DEPOIS -->
-        <section class="feature-card">
-            <figure class="media-container">
-                <img src="days.jpeg" alt="Manutenção e cuidado com ventilador da escola" id="featured-img">
-                <figcaption class="media-caption">
-                    <i class="fa-solid fa-camera"></i>
-                    <b>antes e depois - "ventilador"</b>
+        <!-- SEÇÃO EM DESTAQUE - PRESERVAÇÃO -->
+        <section class="showcase-card">
+            <figure class="media-box">
+                <img src="days.jpeg" alt="Exemplo de manutenção de ventilador na escola" id="featured-img">
+                <figcaption class="media-tag">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <span>antes e depois - "ventilador"</span>
                 </figcaption>
             </figure>
-            <p class="awareness-text">
-                O cuidado com o patrimônio da escola é responsabilidade de todos os estudantes e funcionários. 
-                Os bens duráveis são fundamentais para o desenvolvimento pedagógico e geram um ambiente melhor para todos.
+            <p class="awareness-desc">
+                O cuidado com o patrimônio da escola é responsabilidade compartilhada entre todos os estudantes e funcionários.
+                Manter os bens duráveis bem conservados gera um ambiente de aprendizado muito mais agradável e seguro.
             </p>
         </section>
 
-        <!-- TELA 1: LOGIN E IDENTIFICAÇÃO -->
-        <section class="game-card" id="login-card">
-            <div class="card-header">
-                <i class="fa-solid fa-user-astronaut card-icon"></i>
-                <h2>Entrar no Game</h2>
-                <p>Identifique-se para acumular pontos e subir no Ranking Escolar!</p>
+        <!-- TELA 1: CADASTRO / LOGIN -->
+        <section class="content-card" id="login-screen">
+            <div class="card-title-group">
+                <i class="fa-solid fa-user-astronaut card-icon-main"></i>
+                <h2>Entrar na Arena do Conhecimento</h2>
+                <p>Identifique-se para acumular pontos, liberar conquistas e entrar no Ranking Escolar!</p>
             </div>
-            
-            <form id="login-form" class="login-form">
-                <div class="input-group">
-                    <i class="fa-solid fa-user input-icon"></i>
-                    <input type="text" id="username" class="custom-input" placeholder="Digite seu Nome ou Apelido" required maxlength="20" autocomplete="off">
+
+            <form id="login-form" class="form-grid">
+                <div class="input-wrapper">
+                    <input type="text" id="username" class="custom-input-field" placeholder="Seu Nome ou Apelido" required maxlength="25" autocomplete="off">
+                    <i class="fa-solid fa-user input-icon-left"></i>
                 </div>
 
-                <div class="input-group">
-                    <i class="fa-solid fa-school input-icon"></i>
-                    <select id="user-grade" class="custom-input" required>
-                        <option value="" disabled selected>Selecione sua Turma/Série</option>
-                        <option value="6º Ano">6º Ano</option>
-                        <option value="7º Ano">7º Ano</option>
-                        <option value="8º Ano">8º Ano</option>
-                        <option value="9º Ano">9º Ano</option>
-                        <option value="Ensino Médio">Ensino Médio</option>
-                        <option value="Professor / Funcionário">Professor / Funcionário</option>
+                <div class="input-wrapper">
+                    <select id="user-grade" class="custom-input-field" required>
+                        <option value="" disabled selected>Selecione sua Turma / Série</option>
+                        <option value="6º Ano">6º Ano do Ensino Fundamental</option>
+                        <option value="7º Ano">7º Ano do Ensino Fundamental</option>
+                        <option value="8º Ano">8º Ano do Ensino Fundamental</option>
+                        <option value="9º Ano">9º Ano do Ensino Fundamental</option>
+                        <option value="1º Ano Médio">1º Ano do Ensino Médio</option>
+                        <option value="2º Ano Médio">2º Ano do Ensino Médio</option>
+                        <option value="3º Ano Médio">3º Ano do Ensino Médio</option>
+                        <option value="Professor/Equipe">Professor ou Equipe Escolar</option>
                     </select>
+                    <i class="fa-solid fa-school input-icon-left"></i>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-glow">
-                    <span>Iniciar Desafio</span>
-                    <i class="fa-solid fa-play"></i>
+                <button type="submit" class="btn-action btn-primary-glow">
+                    <span>Iniciar Quiz Interativo</span>
+                    <i class="fa-solid fa-gamepad"></i>
                 </button>
             </form>
         </section>
 
-        <!-- TELA 2: INTERFACE DO QUIZ -->
-        <section class="game-card hide" id="quiz-card">
-            <!-- Barra de Status Superior -->
-            <div class="status-bar">
-                <div class="player-info">
-                    <i class="fa-solid fa-user-check"></i>
+        <!-- TELA 2: ARENA DO QUIZ -->
+        <section class="content-card hide" id="quiz-screen">
+            <div class="hud-status-bar">
+                <div class="hud-item">
+                    <i class="fa-solid fa-user-check" style="color: var(--accent-color);"></i>
                     <span id="player-display">Jogador: -</span>
                 </div>
-                <div class="timer-badge" id="timer-badge">
-                    <i class="fa-solid fa-stopwatch"></i>
-                    <span id="timer-text">15s</span>
+                <div class="hud-item hud-timer">
+                    <i class="fa-solid fa-clock"></i>
+                    <span id="timer-display">15s</span>
                 </div>
-                <div class="score-badge">
+                <div class="hud-item hud-score">
                     <i class="fa-solid fa-star"></i>
-                    <span id="score-tracker">0 pts</span>
+                    <span id="score-display">0 pts</span>
                 </div>
             </div>
 
-            <!-- Barra de Progresso das Perguntas -->
-            <div class="progress-container">
-                <div class="progress-bar" id="progress-bar"></div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill"></div>
             </div>
 
-            <div class="question-box">
-                <span class="question-number" id="question-number">Pergunta 1/10</span>
-                <h2 id="question-title" class="question-title">Carregando pergunta...</h2>
+            <div class="question-header">
+                <span class="question-idx" id="question-index">Pergunta 1 de 10</span>
+                <h2 class="question-text" id="question-text">Carregando pergunta...</h2>
             </div>
 
-            <div class="options-grid" id="options-container">
-                <!-- Botões das Opções inseridos dinamicamente -->
+            <div class="options-list" id="options-list">
+                <!-- Botões inseridos via JS -->
             </div>
 
-            <div class="feedback-container">
-                <p class="feedback-text" id="feedback-text"></p>
+            <div class="feedback-area">
+                <p class="feedback-msg" id="feedback-msg"></p>
             </div>
         </section>
 
-        <!-- TELA 3: RESULTADO FINAL E RANKING -->
-        <section class="game-card hide" id="result-card">
-            <div class="result-header">
-                <div class="trophy-icon">
+        <!-- TELA 3: PAINEL DE RESULTADOS E RANKING -->
+        <section class="content-card hide" id="result-screen">
+            <div class="results-summary">
+                <div class="trophy-badge">
                     <i class="fa-solid fa-trophy"></i>
                 </div>
-                <h2>Parabéns pelo Desempenho!</h2>
-            </div>
+                <h2>Desafio Concluído!</h2>
+                <p class="score-output" id="final-score-output">Você acumulou 0 pontos!</p>
 
-            <div class="result-body">
-                <p class="final-score-text" id="final-score-text">Você fez 0 pontos</p>
-                <div class="badge-container">
-                    <span class="badge" id="achievement-badge">Guardião do Patrimônio</span>
-                </div>
-                <p class="high-score-info" id="high-score-info">Seu recorde pessoal: 0 pts</p>
+                <div class="level-badge" id="level-badge">Guardião Escolar</div>
+                <p class="high-score-record" id="high-score-record">Seu recorde pessoal: 0 pts</p>
 
-                <!-- Tabela de Ranking Local -->
-                <div class="leaderboard-section">
-                    <h3><i class="fa-solid fa-ranking-star"></i> Top 5 Alunos Conscientes</h3>
-                    <ul class="leaderboard-list" id="leaderboard-list">
-                        <!-- Itens do Ranking inseridos dinamicamente -->
+                <div class="leaderboard-box">
+                    <h3 class="leaderboard-title">
+                        <i class="fa-solid fa-medal"></i>
+                        <span>Top 5 Alunos Conscientes</span>
+                    </h3>
+                    <ul class="leaderboard-table" id="leaderboard-table">
+                        <!-- Linhas geradas via JS -->
                     </ul>
                 </div>
-            </div>
 
-            <div class="action-buttons">
-                <button class="btn btn-primary" onclick="restartQuiz()">
-                    <i class="fa-solid fa-rotate-right"></i> Jogar Novamente
-                </button>
-                <button class="btn btn-secondary" onclick="logout()">
-                    <i class="fa-solid fa-right-from-bracket"></i> Trocar de Usuário
-                </button>
+                <div class="action-group-buttons">
+                    <button class="btn-action btn-primary-glow" onclick="restartGame()">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Jogar Novamente</span>
+                    </button>
+                    <button class="btn-action btn-danger-glow" onclick="logoutUser()">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Sair / Trocar Aluno</span>
+                    </button>
+                </div>
             </div>
         </section>
 
     </main>
 
-    <footer class="main-footer">
-        <p>&copy; 2026 Game do Saber - Projeto Escolar de Preservação do Patrimônio</p>
+    <footer class="footer-credits">
+        <p>&copy; 2026 GAME DO SABER - Projeto Educacional de Conscientização e Preservação Escolar</p>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- ==========================================================================
+       5. LÓGICA E SCRIPT COMPLETO DA APLICAÇÃO
+       ========================================================================== -->
+    <script>
+        /* --- BANCO DE DADOS COMPLETO DE PERGUNTAS --- */
+        const questionsDB = [
+            {
+                question: "O que fazer ao constatar uma carteira ou cadeira rabiscada na sala?",
+                options: [
+                    { text: "Avisar um funcionário ou professor responsável para orientar a limpeza.", correct: true },
+                    { text: "Rabiscar mais um pouco para completar com outro desenho.", correct: false },
+                    { text: "Ignorar, pois o material não me pertence individualmente.", correct: false },
+                    { text: "Gravar um vídeo zombando do estado da cadeira.", correct: false }
+                ]
+            },
+            {
+                question: "De quem é a responsabilidade de cuidar do patrimônio e estrutura da escola?",
+                options: [
+                    { text: "Apenas da equipe de limpeza e da direção escolar.", correct: false },
+                    { text: "Exclusivamente dos alunos do período matutino.", correct: false },
+                    { text: "De todos os alunos, professores, gestores e funcionários.", correct: true },
+                    { text: "Apenas do governo e da secretaria de educação.", correct: false }
+                ]
+            },
+            {
+                question: "Qual atitude simples ajuda diretamente na economia de energia da sala?",
+                options: [
+                    { text: "Deixar luzes e ventiladores ligados na sala vazia durante o recreio.", correct: false },
+                    { text: "Desligar os ventiladores e lâmpadas sempre que todos saírem da sala.", correct: true },
+                    { text: "Ligar o ar-condicionado e manter janelas e portas totalmente abertas.", correct: false },
+                    { text: "Deixar equipamentos elétricos conectados direto na tomada no final de semana.", correct: false }
+                ]
+            },
+            {
+                question: "Como devemos manusear os livros didáticos e acervos da biblioteca?",
+                options: [
+                    { text: "Conservar limpos, sem rasgar, dobrar oásis ou rabiscar as páginas.", correct: true },
+                    { text: "Marcar páginas importantes usando caneta hidrocor permanente.", correct: false },
+                    { text: "Recortar ilustrações dos livros para colagens em trabalhos pessoais.", correct: false },
+                    { text: "Emprestar para terceiros sem o registro formal na biblioteca.", correct: false }
+                ]
+            },
+            {
+                question: "O que fazer caso note uma torneira pingando ou vazamento no banheiro?",
+                options: [
+                    { text: "Deixar o vazamento ocorrer, pois a água não é paga por mim.", correct: false },
+                    { text: "Comunicar imediatamente a inspeção ou equipe de manutenção.", correct: true },
+                    { text: "Brincar com a água acumulada no chão do banheiro.", correct: false },
+                    { text: "Tentar consertar a fiação ou encanamento sem autorização.", correct: false }
+                ]
+            },
+            {
+                question: "Qual o impacto de manter a manutenção preventiva dos ventiladores em dia?",
+                options: [
+                    { text: "Nenhum benefício além de estética visual.", correct: false },
+                    { text: "Melhoria do conforto térmico, segurança e qualidade do ar para a turma.", correct: true },
+                    { text: "Apenas gasto financeiro para a diretoria.", correct: false },
+                    { text: "Aumento desnecessário do barulho durante as aulas.", correct: false }
+                ]
+            },
+            {
+                question: "Como o descarte correto de resíduos nas lixeiras seletivas ajuda a escola?",
+                options: [
+                    { text: "Mantém os ambientes higiênicos, evita insetos e facilita a reciclagem.", correct: true },
+                    { text: "Serve apenas para deixar o pátio mais colorido.", correct: false },
+                    { text: "Não tem impacto significativo no dia a dia da comunidade.", correct: false },
+                    { text: "Aumenta o tempo gasto pelos alunos no intervalo.", correct: false }
+                ]
+            },
+            {
+                question: "Qual é a atitude correta ao utilizar quadras esportivas e materiais de Educação Física?",
+                options: [
+                    { text: "Usar de forma adequada e guardar todos os equipamentos após o treino.", correct: true },
+                    { text: "Chutar as bolas contra as paredes e portas dos corredores.", correct: false },
+                    { text: "Deixar as redes e bolas espalhadas na chuva ao final da aula.", correct: false },
+                    { text: "Usar calçados com trava de ferro no piso interno do ginásio.", correct: false }
+                ]
+            },
+            {
+                question: "O que a pichação nas paredes externas e internas provoca no ambiente escolar?",
+                options: [
+                    { text: "Sensação de desleixo, degradação do espaço e custos altos de pintura.", correct: true },
+                    { text: "Valorização do patrimônio cultural do bairro.", correct: false },
+                    { text: "Aumento do engajamento dos alunos com as artes.", correct: false },
+                    { text: "Economia com manutenção predial.", correct: false }
+                ]
+            },
+            {
+                question: "Por que não devemos apoiar os pés nas paredes ou portas das salas?",
+                options: [
+                    { text: "Porque suja a pintura, deixa marcas e desgasta o patrimônio rapidamente.", correct: true },
+                    { text: "Porque a tinta pode manchar os calçados dos alunos.", correct: false },
+                    { text: "Não há problema algum em colocar os pés nas paredes.", correct: false },
+                    { text: "Apenas por questão de etiqueta sem impacto físico na parede.", correct: false }
+                ]
+            }
+        ];
+
+        /* --- ESTADO GLOBAL DO JOGO --- */
+        let gameQuestions = [];
+        let currentIdx = 0;
+        let score = 0;
+        let player = null;
+        let grade = "";
+        let timer = null;
+        let timeLeft = 15;
+        let audioCtx = null;
+
+        /* --- ELEMENTOS HTML --- */
+        const loginScreen = document.getElementById("login-screen");
+        const quizScreen = document.getElementById("quiz-screen");
+        const resultScreen = document.getElementById("result-screen");
+
+        const loginForm = document.getElementById("login-form");
+        const usernameInput = document.getElementById("username");
+        const userGradeSelect = document.getElementById("user-grade");
+
+        const playerDisplay = document.getElementById("player-display");
+        const scoreDisplay = document.getElementById("score-display");
+        const timerDisplay = document.getElementById("timer-display");
+        const progressFill = document.getElementById("progress-fill");
+
+        const questionIndex = document.getElementById("question-index");
+        const questionText = document.getElementById("question-text");
+        const optionsList = document.getElementById("options-list");
+        const feedbackMsg = document.getElementById("feedback-msg");
+
+        const finalScoreOutput = document.getElementById("final-score-output");
+        const levelBadge = document.getElementById("level-badge");
+        const highScoreRecord = document.getElementById("high-score-record");
+        const leaderboardTable = document.getElementById("leaderboard-table");
+
+        /* --- SINTETIZADOR DE ÁUDIO (WEB AUDIO API) --- */
+        function triggerAudio(type) {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'correct') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+                    osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.35);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.35);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.12);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.35);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.35);
+                } else if (type === 'tick') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.05);
+                }
+            } catch (err) {
+                // Áudio opcional caso bloqueado pelo navegador
+            }
+        }
+
+        /* --- AUTENTICAÇÃO E SESSÃO --- */
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const uName = usernameInput.value.trim();
+            const uGrade = userGradeSelect.value;
+
+            if (uName && uGrade) {
+                player = uName;
+                grade = uGrade;
+                localStorage.setItem("gameSaber_session", JSON.stringify({ player, grade }));
+                initQuiz();
+            }
+        });
+
+        function verifySession() {
+            const rawSession = localStorage.getItem("gameSaber_session");
+            if (rawSession) {
+                const data = JSON.parse(rawSession);
+                player = data.player;
+                grade = data.grade;
+                initQuiz();
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem("gameSaber_session");
+            player = null;
+            grade = "";
+            clearInterval(timer);
+            
+            resultScreen.classList.add("hide");
+            quizScreen.classList.add("hide");
+            loginScreen.classList.remove("hide");
+            usernameInput.value = "";
+        }
+
+        /* --- LÓGICA DA ARENA DO QUIZ --- */
+        function initQuiz() {
+            loginScreen.classList.add("hide");
+            resultScreen.classList.add("hide");
+            quizScreen.classList.remove("hide");
+
+            playerDisplay.textContent = `Jogador: ${player} (${grade})`;
+            score = 0;
+            currentIdx = 0;
+
+            // Embaralha o banco de perguntas
+            gameQuestions = [...questionsDB].sort(() => Math.random() - 0.5);
+
+            updateScoreHUD();
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            clearInterval(timer);
+            feedbackMsg.textContent = "";
+
+            const q = gameQuestions[currentIdx];
+            questionIndex.textContent = `Pergunta ${currentIdx + 1} de ${gameQuestions.length}`;
+            questionText.textContent = q.question;
+
+            // Progresso
+            const pPct = (currentIdx / gameQuestions.length) * 100;
+            progressFill.style.width = `${pPct}%`;
+
+            // Opções
+            optionsList.innerHTML = "";
+            const shuffledOpts = [...q.options].sort(() => Math.random() - 0.5);
+
+            shuffledOpts.forEach(opt => {
+                const btn = document.createElement("button");
+                btn.className = "btn-option-card";
+                btn.innerHTML = `<span>${opt.text}</span> <i class="fa-regular fa-circle"></i>`;
+                btn.addEventListener("click", () => handleSelection(opt.correct, btn));
+                optionsList.appendChild(btn);
+            });
+
+            runTimer();
+        }
+
+        function runTimer() {
+            timeLeft = 15;
+            timerDisplay.textContent = `${timeLeft}s`;
+
+            timer = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = `${timeLeft}s`;
+
+                if (timeLeft <= 5 && timeLeft > 0) {
+                    triggerAudio('tick');
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timeOutHandler();
+                }
+            }, 1000);
+        }
+
+        function timeOutHandler() {
+            lockButtons();
+            triggerAudio('wrong');
+            feedbackMsg.style.color = "var(--danger-color)";
+            feedbackMsg.textContent = "⏱️ Tempo esgotado para responder!";
+
+            setTimeout(advanceQuestion, 1600);
+        }
+
+        function handleSelection(isCorrect, element) {
+            clearInterval(timer);
+            lockButtons();
+
+            if (isCorrect) {
+                score += 10 + timeLeft; // Bônus de tempo
+                triggerAudio('correct');
+                element.classList.add("correct-ans");
+                element.querySelector("i").className = "fa-solid fa-circle-check";
+                feedbackMsg.style.color = "var(--accent-color)";
+                feedbackMsg.textContent = "Excelente! Resposta Correta! 🎉";
+            } else {
+                triggerAudio('wrong');
+                element.classList.add("wrong-ans");
+                element.querySelector("i").className = "fa-solid fa-circle-xmark";
+                feedbackMsg.style.color = "var(--danger-color)";
+                feedbackMsg.textContent = "Ops! Resposta Incorreta. ❌";
+            }
+
+            updateScoreHUD();
+            setTimeout(advanceQuestion, 1600);
+        }
+
+        function lockButtons() {
+            const btns = optionsList.querySelectorAll(".btn-option-card");
+            btns.forEach(b => b.disabled = true);
+        }
+
+        function updateScoreHUD() {
+            scoreDisplay.textContent = `${score} pts`;
+        }
+
+        function advanceQuestion() {
+            currentIdx++;
+            if (currentIdx < gameQuestions.length) {
+                renderQuestion();
+            } else {
+                completeQuiz();
+            }
+        }
+
+        /* --- FINALIZAÇÃO E RANKING --- */
+        function completeQuiz() {
+            quizScreen.classList.add("hide");
+            resultScreen.classList.remove("hide");
+
+            finalScoreOutput.textContent = `${player}, você fez um total de ${score} pontos!`;
+
+            // Atribuição de Níveis
+            let title = "🌱 Aprendiz do Cuidado";
+            if (score >= 200) {
+                title = "🏆 Guardião Supremo do Patrimônio";
+            } else if (score >= 120) {
+                title = "⭐ Protetor do Patrimônio Escolar";
+            }
+            levelBadge.textContent = title;
+
+            persistScore(player, score, grade);
+            displayLeaderboard();
+        }
+
+        function persistScore(pName, pScore, pGrade) {
+            let rank = JSON.parse(localStorage.getItem("gameSaber_leaderboard")) || [];
+
+            rank.push({ name: pName, score: pScore, grade: pGrade, date: new Date().toLocaleDateString() });
+            rank.sort((a, b) => b.score - a.score);
+            rank = rank.slice(0, 5); // Mantém Top 5
+
+            localStorage.setItem("gameSaber_leaderboard", JSON.stringify(rank));
+
+            // Salva recorde pessoal
+            const personalBest = Math.max(pScore, localStorage.getItem(`highScore_${pName}`) || 0);
+            localStorage.setItem(`highScore_${pName}`, personalBest);
+            highScoreRecord.textContent = `Seu recorde pessoal atual: ${personalBest} pts`;
+        }
+
+        function displayLeaderboard() {
+            const rank = JSON.parse(localStorage.getItem("gameSaber_leaderboard")) || [];
+            leaderboardTable.innerHTML = "";
+
+            if (rank.length === 0) {
+                leaderboardTable.innerHTML = `<li class="leaderboard-row"><span>Sem registros no ranking ainda.</span></li>`;
+                return;
+            }
+
+            rank.forEach((item, index) => {
+                const li = document.createElement("li");
+                li.className = "leaderboard-row";
+                li.innerHTML = `
+                    <span><b>#${index + 1}</b> ${item.name} (${item.grade})</span>
+                    <b>${item.score} pts</b>
+                `;
+                leaderboardTable.appendChild(li);
+            });
+        }
+
+        function restartGame() {
+            initQuiz();
+        }
+
+        /* --- ANIMAÇÃO DE PARTICULAS NO CANVAS --- */
+        function initParticlesCanvas() {
+            const canvas = document.getElementById("particles-canvas");
+            const ctx = canvas.getContext("2d");
+            let particlesArr = [];
+
+            function fitCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener("resize", fitCanvas);
+            fitCanvas();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.radius = Math.random() * 2 + 1;
+                    this.speedX = (Math.random() - 0.5) * 0.6;
+                    this.speedY = (Math.random() - 0.5) * 0.6;
+                    this.opacity = Math.random() * 0.4 + 0.1;
+                }
+
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+
+                    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+                }
+
+                draw() {
+                    ctx.fillStyle = `rgba(0, 230, 118, ${this.opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 60; i++) {
+                particlesArr.push(new Particle());
+            }
+
+            function renderLoop() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particlesArr.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(renderLoop);
+            }
+
+            renderLoop();
+        }
+
+        // Inicializa ao carregar a página
+        document.addEventListener("DOMContentLoaded", () => {
+            initParticlesCanvas();
+            verifySession();
+        });
+    </script>
 </body>
 </html>
